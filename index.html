@@ -25,14 +25,15 @@
         
         // Icons Component Wrapper for Lucide
         const Icon = ({ name, className }) => {
-            const [svg, setSvg] = useState('');
             useEffect(() => {
-                const icon = lucide.createIcons();
-            }, []);
+                if (window.lucide) {
+                    window.lucide.createIcons();
+                }
+            }, [name]);
             return <i data-lucide={name} className={className}></i>;
         };
 
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxQmqU4XK7wbG7t7eS2rWZ-4y87qB-QzdR1lOoYjYl4okJxRq2G6VIBbBk4AE6j1DDEzw/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbySGQgH2teZazQnv-4YR6_96TKQJvnhNdzJLNE0NOL6HouTnMLvxv-kpfBeKn5ZSF87mQ/exec";
 
         const App = () => {
             const [view, setView] = useState('initial'); 
@@ -83,7 +84,7 @@
                     console.error("Fetch Error:", err);
                 } finally {
                     setSyncing(false);
-                    setTimeout(() => lucide.createIcons(), 100);
+                    setTimeout(() => window.lucide?.createIcons(), 100);
                 }
             };
 
@@ -94,7 +95,7 @@
                     setView('dashboard');
                     loadAllTeams();
                 }
-                lucide.createIcons();
+                window.lucide?.createIcons();
             }, []);
 
             useEffect(() => {
@@ -122,7 +123,7 @@
                     setMessage({ type: 'error', text: "Server connection failed." });
                 } finally {
                     setLoading(false);
-                    setTimeout(() => lucide.createIcons(), 100);
+                    setTimeout(() => window.lucide?.createIcons(), 100);
                 }
             };
 
@@ -149,7 +150,7 @@
                     loadAllTeams();
                 } finally {
                     setLoading(false);
-                    setTimeout(() => lucide.createIcons(), 100);
+                    setTimeout(() => window.lucide?.createIcons(), 100);
                 }
             };
 
@@ -175,7 +176,7 @@
             };
 
             // Re-initialize icons when view changes
-            useEffect(() => { lucide.createIcons(); }, [view, selectedRound, message]);
+            useEffect(() => { window.lucide?.createIcons(); }, [view, selectedRound, message]);
 
             const renderInitialView = () => (
                 <div className="space-y-4">
